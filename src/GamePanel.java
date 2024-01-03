@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
-    static final int GAME_UNITS = (SCREEN_HEIGHT * SCREEN_WIDTH) / UNIT_SIZE;
+    static final int GAME_UNITS = (SCREEN_HEIGHT * SCREEN_WIDTH) / (UNIT_SIZE*UNIT_SIZE);
     static final int DELAY = 100;
     final int x[] = new int[GAME_UNITS];
     final int y[] = new int[GAME_UNITS];
@@ -87,7 +87,17 @@ public class GamePanel extends JPanel implements ActionListener {
                     graphics.setColor(new Color(60, 180, 2));
                     graphics.fillRect(x[i]-5, y[i]-5, UNIT_SIZE+10, UNIT_SIZE+10);
                 } else {
-                    graphics.setColor(new Color(51, 204, 0));
+                    graphics.setColor(new Color(switch (((x[i]+y[i])/UNIT_SIZE)%7)
+                    {
+                        case 0 -> 0xff6961;
+                        case 1 -> 0xf69552;
+                        case 2 -> 0xffd347;
+                        case 3 -> 0xb2cc00;
+                        case 4 -> 0x00bbd4;
+                        case 5 -> 0x448aff;
+                        case 6 -> 0xc173ff;
+                        default -> 0xb2cc00;
+                    }));
                     graphics.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }
@@ -188,6 +198,7 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        int j = 0;
         if(running){
             move();
             checkApple();
